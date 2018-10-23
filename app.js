@@ -37,4 +37,8 @@ T.get('search/tweets', params, function(err, data, response) {
     }
 });
 
+T.post('statuses/update', { status: 'PRIMER TWIT! YEITESS' }, function(err, data, response) {
+    console.log(data);
+});
+
 
