@@ -1,6 +1,8 @@
 var Twitter = require('twitter');
 var config = require('./config.js');
 var T = new Twitter(config);
+var fetch = require('node-fetch');
+var moment = require('moment');
 
 // Set up your search parameters
 var params = {
@@ -71,8 +73,37 @@ let tweetIt = () => {
     T.post('statuses/update', randomTwit, isTweeted);
 };
 
-tweetIt();
-setInterval(tweetIt, 1000*60);
-setInterval(favTwit, 1000*60*60);
+
+let futbolData = () => {
+    let isToday = new Date();
+    let weekLimit; //
+    let resultsArr = [];
+
+    fetch(`https://apifootball.com/api/?action=get_events&from=2018-10-27&to=2018-10-28&league_id=63&APIkey=${config.football_apiKey}`)
+        .then(res => res.json())
+        .then(json => {
+            json.map(i => {
+                /*console.log(`${i.country_name} ${i.league_name} Results => ${i.match_hometeam_name} ${i.match_hometeam_score} - ${i.match_awayteam_score} ${i.match_awayteam_name}`);
+                console.log('=====');*/
+                resultsArr.push({home: i.match_hometeam_name, away: i.match_awayteam_name, homeGoals: i.match_hometeam_score, awayGoals: i.match_awayteam_score});
+            });
+
+            resultsArr.map(i => {
+                //console.log(`This is it ==> ${i.home} vs ${i.away}`);
+                console.log(`Result ${i.home} ${i.homeGoals} - ${i.awayGoals} ${i.away}`);
+            });
+
+
+        })
+        .catch(err => console.log("ERRORRR!!", err));
+
+
+};
+
+//tweetIt();
+//setInterval(tweetIt, 1000*60);
+//setInterval(favTwit, 1000*60*60);
+//setInterval(futbolData, 1000*5);
+futbolData();
 
 
