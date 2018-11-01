@@ -13,17 +13,26 @@ let futbolData = () => {
         .then(res => res.json())
         .then(json => {
             json.map(i => {
-                resultsArr.push({home: i.match_hometeam_name, away: i.match_awayteam_name, homeGoals: i.match_hometeam_score, awayGoals: i.match_awayteam_score});
+                resultsArr.push({
+                    country: `${i.country_name}'s`,
+                    league: `EFL ${i.league_name}`,
+                    home: i.match_hometeam_name,
+                    away: i.match_awayteam_name,
+                    homeGoals: i.match_hometeam_score,
+                    awayGoals: i.match_awayteam_score,
+                    twit: `${i.country_name} EFL ${i.league_name} Results => ${i.match_hometeam_name} ${i.match_hometeam_score} - ${i.match_awayteam_score} ${i.match_awayteam_name}. #${i.match_hometeam_name} #${i.match_awayteam_name} #EFL`
+                });
             });
 
             let isTweeted = () => {
                 resultsArr.map(i => {
-                    console.log(`Result ${i.home} ${i.homeGoals} - ${i.awayGoals} ${i.away}`);
+                    //console.log(`Result ${i.home} ${i.homeGoals} - ${i.awayGoals} ${i.away}`);
+                    console.log(i.twit);
                 });
             };
             isTweeted();
         })
-        .catch(err => console.log("ERRORRR!!", err));
+        .catch(err => console.log("ERROR HAS OCURRED!", err));
 };
 
 module.exports = futbolData;
